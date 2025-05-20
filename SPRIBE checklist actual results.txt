@@ -1,0 +1,943 @@
+SPRIBE checklist manual testing results
+
+1. Create Player (GET /player/create/{editor})
+
+Positive Test Cases:
+PTC1.1 - Create player 17 years old by role 'supervisor' with gender 'male' and role 'user' and password '019azAZ'
+	curl --location 'http://3.68.165.45/player/create/supervisor?age=17&gender=male&login=TA_Login1&password=019azAZ&role=user&screenName=TA_Screen_Name1'
+	200 OK
+	{
+	    "id": 1696979991,
+	    "login": "TA_Login1",
+	    "password": null,
+	    "screenName": null,
+	    "gender": null,
+	    "age": null,
+	    "role": null
+	}
+PTC1.2 - Create player 59 years old by role 'supervisor' with gender 'Female' and role 'admin' and password '0123456789abcde'
+	curl --location 'http://3.68.165.45/player/create/supervisor?age=59&gender=Female&login=TA_Login1&password=0123456789abcde&role=admin&screenName=TA_Screen_Name1'
+	200 OK
+		{
+	    "id": 37643059,
+	    "login": "TA_Login1",
+	    "password": null,
+	    "screenName": null,
+	    "gender": null,
+	    "age": null,
+	    "role": null
+	}
+PTC1.3 - Create player 20 years old by role 'admin' with gender 'female' and role 'admin' and password '0123456789ABCDE'
+	curl --location 'http://3.68.165.45/player/create/TA_Login1?age=20&gender=female&login=TA_Login2&password=0123456789ABCDE&role=admin&screenName=TA_Screen_Name2'
+	200 OK
+	{
+	    "id": 2129345928,
+	    "login": "TA_Login2",
+	    "password": null,
+	    "screenName": null,
+	    "gender": null,
+	    "age": null,
+	    "role": null
+	}
+PTC1.4 - Create player 55 years old by role 'admin' with gender 'MALE' and role user and password 'abcde0123456789'
+	curl --location 'http://3.68.165.45/player/create/TA_Login1?age=55&gender=MALE&login=TA_Login3&password=abcde0123456789&role=user&screenName=TA_Screen_Name3'
+	200 OK
+	{
+	    "id": 876944416,
+	    "login": "TA_Login3",
+	    "password": null,
+	    "screenName": null,
+	    "gender": null,
+	    "age": null,
+	    "role": null
+	}
+
+Negative Test Cases:
+NTC1.5 - Empty editor
+	curl --location 'http://3.68.165.45/player/create?age=55&gender=MALE&login=TA_Login4&password=abcde0123456789&role=user&screenName=TA_Screen_Name4'
+	404 Not Found
+	{
+	    "timestamp": "2025-05-19T20:21:11.607+00:00",
+	    "status": 404,
+	    "error": "Not Found",
+	    "message": "",
+	    "path": "/player/create"
+	}
+NTC1.6 - Not existed editor
+	curl --location 'http://3.68.165.45/player/create/TA_Login5?age=55&gender=MALE&login=TA_Login4&password=abcde0123456789&role=user&screenName=TA_Screen_Name4'
+	403 Forbidden
+NTC1.7 - editor with role 'user'
+	curl --location 'http://3.68.165.45/player/create/TA_Login3?age=55&gender=MALE&login=TA_Login4&password=abcde0123456789&role=user&screenName=TA_Screen_Name4'
+	403 Forbidden
+NTC1.8 - Create player with age 16 years old
+	curl --location 'http://3.68.165.45/player/create/supervisor?age=16&gender=MALE&login=TA_Login4&password=abcde0123456789&role=user&screenName=TA_Screen_Name4'
+	400 Bad Request
+NTC1.9 - Create player with age 60 years old
+	curl --location 'http://3.68.165.45/player/create/supervisor?age=60&gender=MALE&login=TA_Login4&password=abcde0123456789&role=user&screenName=TA_Screen_Name4'
+	200 OK
+	{
+	    "id": 134538347,
+	    "login": "TA_Login4",
+	    "password": null,
+	    "screenName": null,
+	    "gender": null,
+	    "age": null,
+	    "role": null
+	}
+NTC1.10 - Create player with age value in float format with dot
+	curl --location 'http://3.68.165.45/player/create/supervisor?age=20.9&gender=MALE&login=TA_Login4&password=abcde0123456789&role=user&screenName=TA_Screen_Name4'
+	400 Bad Request
+NTC1.11 - Create player with age value in float format with comma
+	curl --location 'http://3.68.165.45/player/create/supervisor?age=20%2C9&gender=MALE&login=TA_Login4&password=abcde0123456789&role=user&screenName=TA_Screen_Name4'
+	400 Bad Request
+NTC1.12 - Create player with age value as int number in String format
+	curl --location 'http://3.68.165.45/player/create/supervisor?age=%2220%22&gender=MALE&login=TA_Login4&password=abcde0123456789&role=user&screenName=TA_Screen_Name4'
+	400 Bad Request
+NTC1.13 - Create player with age value as a letters in String format
+	curl --location 'http://3.68.165.45/player/create/supervisor?age=%22twenty%22&gender=MALE&login=TA_Login4&password=abcde0123456789&role=user&screenName=TA_Screen_Name4'
+	400 Bad Request
+NTC1.14 - Create player without age parameter
+	curl --location 'http://3.68.165.45/player/create/supervisor?gender=MALE&login=TA_Login4&password=abcde0123456789&role=user&screenName=TA_Screen_Name4'
+	400 Bad Request
+	{
+	    "timestamp": "2025-05-19T20:37:19.246+00:00",
+	    "status": 400,
+	    "error": "Bad Request",
+	    "message": "",
+	    "path": "/player/create/supervisor"
+	}
+NTC1.15 - Create player with empty age value
+	curl --location 'http://3.68.165.45/player/create/supervisor?age=&gender=MALE&login=TA_Login4&password=abcde0123456789&role=user&screenName=TA_Screen_Name4'
+	400 Bad Request
+NTC1.16 - Create player without gender parameter
+	curl --location 'http://3.68.165.45/player/create/supervisor?age=20&login=TA_Login4&password=abcde0123456789&role=user&screenName=TA_Screen_Name4'
+	400 Bad Request
+	{
+	    "timestamp": "2025-05-19T20:38:07.189+00:00",
+	    "status": 400,
+	    "error": "Bad Request",
+	    "message": "",
+	    "path": "/player/create/supervisor"
+	}
+NTC1.17 - Create player with empty gender value
+	curl --location 'http://3.68.165.45/player/create/supervisor?age=20&gender=&login=TA_Login4&password=abcde0123456789&role=user&screenName=TA_Screen_Name4'
+	400 Bad Request
+NTC1.18 - Create player without login parameter
+	curl --location 'http://3.68.165.45/player/create/supervisor?age=20&gender=male&password=abcde0123456789&role=user&screenName=TA_Screen_Name4'
+	400 Bad Request
+	{
+	    "timestamp": "2025-05-20T06:57:04.963+00:00",
+	    "status": 400,
+	    "error": "Bad Request",
+	    "message": "",
+	    "path": "/player/create/supervisor"
+	}
+NTC1.19 - Create player with empty login value
+	curl --location 'http://3.68.165.45/player/create/supervisor?age=20&gender=male&login=&password=abcde0123456789&role=user&screenName=TA_Screen_Name4'
+	400 Bad Request
+NTC1.20 - Create player without password parameter
+	curl --location 'http://3.68.165.45/player/create/supervisor?age=20&gender=male&login=TA_Login4&role=user&screenName=TA_Screen_Name4'
+	200 OK
+	{
+	    "id": 223238870,
+	    "login": "TA_Login4",
+	    "password": null,
+	    "screenName": null,
+	    "gender": null,
+	    "age": null,
+	    "role": null
+	}
+NTC1.21 - Create player with empty password value
+	curl --location 'http://3.68.165.45/player/create/supervisor?age=20&gender=male&login=TA_Login4&password=&role=user&screenName=TA_Screen_Name4'
+	200 OK
+	{
+	    "id": 1960137763,
+	    "login": "TA_Login4",
+	    "password": null,
+	    "screenName": null,
+	    "gender": null,
+	    "age": null,
+	    "role": null
+	}
+NTC1.22 - Create player without role parameter
+	curl --location 'http://3.68.165.45/player/create/supervisor?age=20&gender=male&login=TA_Login4&password=12345abc&screenName=TA_Screen_Name4'
+	400 Bad Request
+	{
+	    "timestamp": "2025-05-20T07:00:50.153+00:00",
+	    "status": 400,
+	    "error": "Bad Request",
+	    "message": "",
+	    "path": "/player/create/supervisor"
+	}
+NTC1.23 - Create player with empty role value
+	curl --location 'http://3.68.165.45/player/create/supervisor?age=20&gender=male&login=TA_Login4&password=12345abc&role=&screenName=TA_Screen_Name4'
+	400 Bad Request
+NTC1.24 - Create player without screenName parameter
+	curl --location 'http://3.68.165.45/player/create/supervisor?age=20&gender=male&login=TA_Login4&password=12345abc&role=user'
+	400 Bad Request
+	{
+	    "timestamp": "2025-05-20T07:04:14.638+00:00",
+	    "status": 400,
+	    "error": "Bad Request",
+	    "message": "",
+	    "path": "/player/create/supervisor"
+	}
+NTC1.25 - Create player with empty screenName value
+	curl --location 'http://3.68.165.45/player/create/supervisor?age=20&gender=male&login=TA_Login4&password=12345abc&role=user&screenName='
+	400 Bad Request
+NTC1.26 - Create player with gender 'wrong'
+	curl --location 'http://3.68.165.45/player/create/supervisor?age=20&gender=wrong&login=TA_Login4&password=12345abc&role=user&screenName=TA_ScreenName4'
+	200 OK
+	{
+	    "id": 172278124,
+	    "login": "TA_Login4",
+	    "password": null,
+	    "screenName": null,
+	    "gender": null,
+	    "age": null,
+	    "role": null
+	}
+NTC1.27 - Create player with login that already exists
+	curl --location 'http://3.68.165.45/player/create/supervisor?age=20&gender=wrong&login=TA_Login4&password=12345abc&role=user&screenName=TA_ScreenName5'
+	200 OK
+	{
+	    "id": 172278124,
+	    "login": "TA_Login4",
+	    "password": null,
+	    "screenName": null,
+	    "gender": null,
+	    "age": null,
+	    "role": null
+	}
+NTC1.28 - Create player with space character as login
+	curl --location 'http://3.68.165.45/player/create/supervisor?age=20&gender=male&login=%20&password=12345abc&role=user&screenName=TA_ScreenName4'
+	400 Bad Request
+NTC1.29 - Create player with 2 space characters as login
+	curl --location 'http://3.68.165.45/player/create/supervisor?age=20&gender=male&login=%20%20&password=12345abc&role=user&screenName=TA_ScreenName4'
+	400 Bad Request
+NTC1.30 - Create player with password with only digits
+	curl --location 'http://3.68.165.45/player/create/supervisor?age=20&gender=male&login=TA_Login4&password=1234567&role=user&screenName=TA_ScreenName4'
+	200 OK
+	{
+	    "id": 1640749674,
+	    "login": "TA_Login4",
+	    "password": null,
+	    "screenName": null,
+	    "gender": null,
+	    "age": null,
+	    "role": null
+	}
+NTC1.31 - Create player with password with only letters
+	curl --location 'http://3.68.165.45/player/create/supervisor?age=20&gender=male&login=TA_Login4&password=abcdefg&role=user&screenName=TA_ScreenName4'
+	200 OK
+	{
+	    "id": 1650730746,
+	    "login": "TA_Login4",
+	    "password": null,
+	    "screenName": null,
+	    "gender": null,
+	    "age": null,
+	    "role": null
+	}
+NTC1.32 - Create player with password with not allowed characters 1 ()!@#$%.&*+;%:?
+	curl --location 'http://3.68.165.45/player/create/supervisor?age=20&gender=male&login=TA_Login4&password=()!%40%23%24%.%26*+%3B%%3A%3F&role=user&screenName=TA_ScreenName4'
+	200 OK
+	{
+	    "id": 527740768,
+	    "login": "TA_Login4",
+	    "password": null,
+	    "screenName": null,
+	    "gender": null,
+	    "age": null,
+	    "role": null
+	}
+NTC1.33 - Create player with password with not allowed characters 2 їß<>~!?;:"'№-_=
+	curl --location 'http://3.68.165.45/player/create/supervisor?age=20&gender=male&login=TA_Login4&password=%D1%97%C3%9F%3C%3E~!%3F%3B%3A%22%27%E2%84%96-_%3D&role=user&screenName=TA_ScreenName4'
+	200 OK
+	{
+	    "id": 1818896053,
+	    "login": "TA_Login4",
+	    "password": null,
+	    "screenName": null,
+	    "gender": null,
+	    "age": null,
+	    "role": null
+	}
+NTC1.34 - Create player with password with 7 spaces as a value
+	curl --location 'http://3.68.165.45/player/create/supervisor?age=20&gender=male&login=TA_Login4&password=%20%20%20%20%20%20%20&role=user&screenName=TA_ScreenName4'
+	200 OK
+	{
+	    "id": 1913714340,
+	    "login": "TA_Login4",
+	    "password": null,
+	    "screenName": null,
+	    "gender": null,
+	    "age": null,
+	    "role": null
+	}
+NTC1.35 - Create player with password 6 characters long
+	curl --location 'http://3.68.165.45/player/create/supervisor?age=20&gender=male&login=TA_Login4&password=123abc&role=user&screenName=TA_ScreenName4'
+	200 OK
+	{
+	    "id": 1395164152,
+	    "login": "TA_Login4",
+	    "password": null,
+	    "screenName": null,
+	    "gender": null,
+	    "age": null,
+	    "role": null
+	}
+NTC1.36 - Create player with password 16 characters long
+	curl --location 'http://3.68.165.45/player/create/supervisor?age=20&gender=male&login=TA_Login4&password=0123456789abcdef&role=user&screenName=TA_ScreenName4'
+	200 OK
+	{
+	    "id": 758383208,
+	    "login": "TA_Login4",
+	    "password": null,
+	    "screenName": null,
+	    "gender": null,
+	    "age": null,
+	    "role": null
+	}
+NTC1.37 - Create player with role supervisor
+	curl --location 'http://3.68.165.45/player/create/supervisor?age=20&gender=male&login=TA_Login4&password=0123456789abcde&role=supervisor&screenName=TA_ScreenName4'
+	400 Bad Request
+NTC1.38 - Create player with role wrong
+	curl --location 'http://3.68.165.45/player/create/supervisor?age=20&gender=male&login=TA_Login4&password=0123456789abcde&role=wrong&screenName=TA_ScreenName4'
+	400 Bad Request
+NTC1.39 - Create player with screenName that already exists
+	curl --location 'http://3.68.165.45/player/create/supervisor?age=20&gender=male&login=TA_Login5&password=0123456789abcde&role=user&screenName=TA_ScreenName4'
+	200 OK
+	{
+	    "id": 1890791757,
+	    "login": "TA_Login5",
+	    "password": null,
+	    "screenName": null,
+	    "gender": null,
+	    "age": null,
+	    "role": null
+	}
+NTC1.40 - Create player with login as existed supervisor but with role 'user'
+	curl --location 'http://3.68.165.45/player/create/supervisor?age=38&gender=female&login=supervisor&password=testSupervisor&role=user&screenName=testSupervisor2'
+	403 Forbidden
+
+2. Delete Player (DELETE /player/delete/{editor})
+
+Positive Test Cases:
+PTC2.1 - Delete player with 'user' role by 'supervisor'
+	curl --location --request DELETE 'http://3.68.165.45/player/delete/supervisor' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "playerId": 1720180909
+	}'
+	204 No Content
+PTC2.2 - Delete player with 'admin' role by 'supervisor'
+	curl --location --request DELETE 'http://3.68.165.45/player/delete/supervisor' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "playerId": 1341508736
+	}'
+	204 No Content
+PTC2.3 - Delete player with 'user' role by 'admin'
+	1239298319
+	curl --location --request DELETE 'http://3.68.165.45/player/delete/TA_Login4' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "playerId": 901687286
+	}'
+	204 No Content
+PTC2.4 - Delete player himself as 'admin'
+	curl --location --request DELETE 'http://3.68.165.45/player/delete/TA_Login4' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "playerId": 1239298319
+	}'
+	204 No Content
+
+Negative Test Cases:
+NTC2.5 - Delete player with empty editor
+	curl --location --request DELETE 'http://3.68.165.45/player/delete' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "playerId": 1013200186
+	}'
+	404 Not Found
+	{
+	    "timestamp": "2025-05-20T08:29:41.257+00:00",
+	    "status": 404,
+	    "error": "Not Found",
+	    "message": "",
+	    "path": "/player/delete"
+	}
+NTC2.6 - Delete player with role 'admin' by different 'admin'
+    "id": 1144265729,
+    "login": "TA_Login4",
+    "id": 931968572,
+    "login": "TA_Login5",
+    curl --location --request DELETE 'http://3.68.165.45/player/delete/TA_Login4' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "playerId": 931968572
+	}'
+	204 No Content
+NTC2.7 - Delete player with role 'user' by different 'user'
+	"id": 1642526778,
+    "login": "TA_Login4",
+    "id": 623424112,
+    "login": "TA_Login5",
+    curl --location --request DELETE 'http://3.68.165.45/player/delete/TA_Login4' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "playerId": 623424112
+	}'
+    204 No Content
+NTC2.8 - Delete player himself as 'user'
+	curl --location --request DELETE 'http://3.68.165.45/player/delete/TA_Login4' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "playerId": 1642526778
+	}'
+	204 No Content
+NTC2.9 - Delete player himself as 'supervisor'
+	curl --location --request DELETE 'http://3.68.165.45/player/delete/supervisor' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "playerId": 1
+	}'
+	403 Forbidden
+NTC2.10 - Delete player with not existed editor
+	curl --location --request DELETE 'http://3.68.165.45/player/delete/supervisor123' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "playerId": 2145837951
+	}'
+	204 No Content
+NTC2.11 - Delete player with empty playerId value
+	curl --location --request DELETE 'http://3.68.165.45/player/delete/supervisor123' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "playerId": 
+	}'
+	400 Bad Request
+	{
+	    "timestamp": "2025-05-20T08:45:33.427+00:00",
+	    "status": 400,
+	    "error": "Bad Request",
+	    "message": "",
+	    "path": "/player/delete/supervisor123"
+	}
+NTC2.12 - Delete player with not existed playerId value
+	curl --location --request DELETE 'http://3.68.165.45/player/delete/supervisor123' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "playerId": 777
+	}'
+	403 Forbidden
+NTC2.13 - Delete player with playerId value as float
+	curl --location --request DELETE 'http://3.68.165.45/player/delete/supervisor123' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "playerId": 959828265.9
+	}'
+	204 No Content
+NTC2.14 - Delete player with playerId value as String with int number
+	curl --location --request DELETE 'http://3.68.165.45/player/delete/supervisor123' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "playerId": "2071895577"
+	}'
+	204 No Content
+NTC2.15 - Delete player with playerId value as String with float number
+	curl --location --request DELETE 'http://3.68.165.45/player/delete/supervisor123' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "playerId": "1278827837.0"
+	}'
+	400 Bad Request
+	{
+	    "timestamp": "2025-05-20T08:48:39.034+00:00",
+	    "status": 400,
+	    "error": "Bad Request",
+	    "message": "",
+	    "path": "/player/delete/supervisor123"
+	}
+NTC2.16 - Delete player with empty body
+	curl --location --request DELETE 'http://3.68.165.45/player/delete/supervisor123' \
+	--data ''
+	400 Bad Request
+	{
+	    "timestamp": "2025-05-20T08:51:13.186+00:00",
+	    "status": 400,
+	    "error": "Bad Request",
+	    "message": "",
+	    "path": "/player/delete/supervisor123"
+	}
+
+3. Get Player by ID (POST /player/get)
+
+Positive Test Cases:
+PTC3.1 - Get player by valid playerId
+	curl --location 'http://3.68.165.45/player/get' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "playerId": 1
+	}'
+	200 OK
+	{
+	    "id": 1,
+	    "login": "supervisor",
+	    "password": "testSupervisor",
+	    "screenName": "testSupervisor",
+	    "gender": "male",
+	    "age": 37,
+	    "role": "supervisor"
+	}
+
+Negative Test Cases:
+NTC3.2 - Get player with playerId as float
+	curl --location 'http://3.68.165.45/player/get' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "playerId": 1.9
+	}'
+	200 OK
+	{
+	    "id": 1,
+	    "login": "supervisor",
+	    "password": "testSupervisor",
+	    "screenName": "testSupervisor",
+	    "gender": "male",
+	    "age": 37,
+	    "role": "supervisor"
+	}
+NTC3.3 - Get player with playerId as String with int number
+	curl --location 'http://3.68.165.45/player/get' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "playerId": "1"
+	}'
+	200 OK
+	{
+	    "id": 1,
+	    "login": "supervisor",
+	    "password": "testSupervisor",
+	    "screenName": "testSupervisor",
+	    "gender": "male",
+	    "age": 37,
+	    "role": "supervisor"
+	}
+NTC3.4 - Get player with playerId as String with float
+	curl --location 'http://3.68.165.45/player/get' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "playerId": "1.9"
+	}'
+	400 Bad Request
+	{
+	    "timestamp": "2025-05-20T09:06:47.099+00:00",
+	    "status": 400,
+	    "error": "Bad Request",
+	    "message": "",
+	    "path": "/player/get"
+	}
+NTC3.5 - Get player by not existed playerId
+	curl --location 'http://3.68.165.45/player/get' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "playerId": 777
+	}'
+	200 OK
+NTC3.6 - Get player without providing playerId
+	curl --location 'http://3.68.165.45/player/get' \
+	--header 'Content-Type: application/json' \
+	--data '{}'
+	200 OK
+NTC3.7 - Get player with negative int number as playerId
+	curl --location 'http://3.68.165.45/player/get' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "playerId": -1
+	}'
+	200 OK
+
+4. Get All Players (GET /player/get/all)
+Positive Test Cases:
+PTC4.1 - Check that id, login and screenName are unique in the list
+
+5. Update Player (PATCH /player/update/{editor}/{id})
+
+Positive Test Cases:
+PTC5.1 - Update player with role 'admin' all fields max length or value by supervisor
+	curl --location --request PATCH 'http://3.68.165.45/player/update/supervisorLogin/571365725' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "age": 59,
+	    "gender": "female",
+	    "login": "login_denysord88_manual_admin2",
+	    "password": "ABc567qqqwwwwww",
+	    "role": "user",
+	    "screenName": "screen_name_denysord88_manual_admin"
+	}'
+	200 OK
+	curl --location 'http://3.68.165.45/player/get' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "playerId": 571365725
+	}'
+	200 OK
+	{
+	    "id": 571365725,
+	    "login": "login_denysord88_manual_admin2",
+	    "password": "ABc567qqqwwwwww",
+	    "screenName": "screen_name_denysord88_manual_admin",
+	    "gender": "female",
+	    "age": 59,
+	    "role": "admin"
+	}
+PTC5.2 - Update only players age to 17 with role 'user' by 'supervisor'
+	curl --location --request PATCH 'http://3.68.165.45/player/update/supervisorLogin/622663557' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "age": 17
+	}'
+	200 OK
+	{
+	    "id": 622663557,
+	    "login": "login_denysord88_manual_user",
+	    "screenName": "screen_name_denysord88_manual_user",
+	    "gender": "male",
+	    "age": 17,
+	    "role": "user"
+	}
+PTC5.3 - Update only players gender to 'male' or 'female' with role 'admin' by himself
+	curl --location --request PATCH 'http://3.68.165.45/player/update/supervisorLogin/571365725' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "gender": "male"
+	}'
+	200 OK
+	{
+	    "id": 571365725,
+	    "login": "login_denysord88_manual_admin2",
+	    "screenName": "screen_name_denysord88_manual_admin",
+	    "gender": "male",
+	    "age": 59,
+	    "role": "admin"
+	}
+PTC5.4 - Update only players login to a unique value with role 'user' by admin
+	curl --location --request PATCH 'http://3.68.165.45/player/update/login_denysord88_manual_admin2/622663557' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "login": "login_denysord88_manual_user2"
+	}'
+	200 OK
+	{
+	    "id": 622663557,
+	    "login": "login_denysord88_manual_user2",
+	    "screenName": "screen_name_denysord88_manual_user",
+	    "gender": "male",
+	    "age": 17,
+	    "role": "user"
+	}
+PTC5.5 - Update only players password with 7 characters long with role 'user' by himself
+	curl --location --request PATCH 'http://3.68.165.45/player/update/login_denysord88_manual_user2/622663557' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "password": "123456s"
+	}'
+	200 OK
+	curl --location 'http://3.68.165.45/player/get' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "playerId": 622663557
+	}'
+	200 OK
+	{
+	    "id": 622663557,
+	    "login": "login_denysord88_manual_user2",
+	    "password": "123456s",
+	    "screenName": "screen_name_denysord88_manual_user",
+	    "gender": "male",
+	    "age": 17,
+	    "role": "user"
+	}
+PTC5.6 - Update only players screenName to a unique value with role 'supervisor' by 'supervisor'
+	curl --location --request PATCH 'http://3.68.165.45/player/update/supervisorLogin/1' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "screenName": "supervisorScreenNameUpdated"
+	}'
+	200 OK
+	{
+	    "id": 1,
+	    "login": "supervisorLogin",
+	    "screenName": "supervisorScreenNameUpdated",
+	    "gender": "male",
+	    "age": 33,
+	    "role": "supervisor"
+	}
+	curl --location --request PATCH 'http://3.68.165.45/player/update/supervisorLogin/1' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "screenName": "supervisorScreenName"
+	}'
+	200 OK
+	{
+	    "id": 1,
+	    "login": "supervisorLogin",
+	    "screenName": "supervisorScreenName",
+	    "gender": "male",
+	    "age": 33,
+	    "role": "supervisor"
+	}
+
+Negative Test Cases:
+NTC5.7 - Update player with empty age
+	curl --location --request PATCH 'http://3.68.165.45/player/update/supervisorLogin/1541278406' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "age": 
+	}'
+	400 Bad Request
+	{
+	    "timestamp": "2025-05-20T14:19:31.454+00:00",
+	    "status": 400,
+	    "error": "Bad Request",
+	    "message": "",
+	    "path": "/player/update/supervisorLogin/1541278406"
+	}
+NTC5.8 - Update player with age 16
+	curl --location --request PATCH 'http://3.68.165.45/player/update/supervisorLogin/1541278406' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "age": 16
+	}'
+	200 OK
+	{
+	    "id": 1541278406,
+	    "login": "login_denysord88_manual_user",
+	    "screenName": "screen_name_denysord88_manual_user",
+	    "gender": "male",
+	    "age": 16,
+	    "role": "user"
+	}
+NTC5.9 - Update player with age 60
+	curl --location --request PATCH 'http://3.68.165.45/player/update/supervisorLogin/1541278406' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "age": 60
+	}'
+	200 OK
+	{
+	    "id": 1541278406,
+	    "login": "login_denysord88_manual_user",
+	    "screenName": "screen_name_denysord88_manual_user",
+	    "gender": "male",
+	    "age": 60,
+	    "role": "user"
+	}
+NTC5.10 - Update player with empty gender
+	curl --location --request PATCH 'http://3.68.165.45/player/update/supervisorLogin/1541278406' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "gender": ""
+	}'
+	200 OK
+	{
+	    "id": 1541278406,
+	    "login": "login_denysord88_manual_user",
+	    "screenName": "screen_name_denysord88_manual_user",
+	    "gender": "",
+	    "age": 60,
+	    "role": "user"
+	}
+NTC5.11 - Update player with wrong gender
+	curl --location --request PATCH 'http://3.68.165.45/player/update/supervisorLogin/1541278406' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "gender": "wrong"
+	}'
+	200 OK
+	{
+	    "id": 1541278406,
+	    "login": "login_denysord88_manual_user",
+	    "screenName": "screen_name_denysord88_manual_user",
+	    "gender": "wrong",
+	    "age": 60,
+	    "role": "user"
+	}
+NTC5.12 - Update player with empty login
+	curl --location --request PATCH 'http://3.68.165.45/player/update/supervisorLogin/1541278406' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "login": ""
+	}'
+	200 OK
+	{
+	    "id": 1541278406,
+	    "login": "",
+	    "screenName": "screen_name_denysord88_manual_user",
+	    "gender": "wrong",
+	    "age": 60,
+	    "role": "user"
+	}
+NTC5.13 - Update player with non-unique login
+	curl --location --request PATCH 'http://3.68.165.45/player/update/supervisorLogin/1541278406' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "login": "StaticUserLogin"
+	}'
+	409 Conflict
+NTC5.14 - Update player with empty screenName
+	curl --location --request PATCH 'http://3.68.165.45/player/update/supervisorLogin/1541278406' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "screenName": ""
+	}'
+	200 OK
+	{
+	    "id": 1541278406,
+	    "login": "",
+	    "screenName": "",
+	    "gender": "wrong",
+	    "age": 60,
+	    "role": "user"
+	}
+NTC5.15 - Update player with non-unique screenName
+	curl --location --request PATCH 'http://3.68.165.45/player/update/supervisorLogin/1541278406' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "screenName": "AQA Richard D'\''Amore"
+	}'
+	200 OK
+	{
+	    "id": 1541278406,
+	    "login": "",
+	    "screenName": "AQA Richard D'Amore",
+	    "gender": "wrong",
+	    "age": 60,
+	    "role": "user"
+	}
+NTC5.16 - Update player without required fields
+	curl --location --request PATCH 'http://3.68.165.45/player/update/supervisorLogin/1541278406' \
+	--header 'Content-Type: application/json' \
+	--data '{}'
+	200 OK
+	{
+	    "id": 1541278406,
+	    "login": "",
+	    "screenName": "AQA Richard D'Amore",
+	    "gender": "wrong",
+	    "age": 60,
+	    "role": "user"
+	}
+NTC5.17 - Update player with role 'user' by another 'user'
+	curl --location --request PATCH 'http://3.68.165.45/player/update/login_denysord88_manual_1/1460486654' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "screenName": "screen_name_denysord88_manual_user_2_updated"
+	}'
+	200 OK
+	{
+	    "id": 1460486654,
+	    "login": "login_denysord88_manual_2",
+	    "screenName": "screen_name_denysord88_manual_user_2_updated",
+	    "gender": "male",
+	    "age": 22,
+	    "role": "user"
+	}
+NTC5.18 - Update player with role 'admin' by another 'admin'
+	690668705 login_denysord88_manual_admin_1
+	1260020245 login_denysord88_manual_admin_2
+	curl --location --request PATCH 'http://3.68.165.45/player/update/login_denysord88_manual_admin_1/1260020245' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "screenName": "screen_name_denysord88_manual_admin_2_updated"
+	}'
+	200 OK
+	{
+	    "id": 1260020245,
+	    "login": "login_denysord88_manual_admin_2",
+	    "screenName": "screen_name_denysord88_manual_admin_2_updated",
+	    "gender": "male",
+	    "age": 22,
+	    "role": "admin"
+	}
+NTC5.19 - Update player with role 'supervisor' by 'admin'
+	curl --location --request PATCH 'http://3.68.165.45/player/update/login_denysord88_manual_admin_1/1' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "screenName": "screen_name_denysord88_manual_admin_2_updated"
+	}'
+	403 Forbidden
+NTC5.20 - Update player with role 'supervisor' by 'user'
+	curl --location --request PATCH 'http://3.68.165.45/player/update/login_denysord88_manual_2/1' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "screenName": "screen_name_denysord88_manual_admin_2_updated"
+	}'
+	403 Forbidden
+NTC5.21 - Update player with minimum password length (6 characters)
+	curl --location --request PATCH 'http://3.68.165.45/player/update/login_denysord88_manual_2/1460486654' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "password": "12345s"
+	}'
+	200 OK
+	curl --location 'http://3.68.165.45/player/get' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "playerId": 1460486654
+	}'
+NTC5.22 - Update player with password length (16 characters)
+	curl --location --request PATCH 'http://3.68.165.45/player/update/login_denysord88_manual_2/1460486654' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "password": "123456789012345s"
+	}'
+	200 OK
+	curl --location 'http://3.68.165.45/player/get' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "playerId": 1460486654
+	}'
+	200 OK
+	{
+	    "id": 1460486654,
+	    "login": "login_denysord88_manual_2",
+	    "password": "123456789012345s",
+	    "screenName": "screen_name_denysord88_manual_user_2_updated",
+	    "gender": "male",
+	    "age": 22,
+	    "role": "user"
+	}
+NTC5.23 - Change player role from 'supervisor' to 'admin' by 'supervisor' himself
+	curl --location --request PATCH 'http://3.68.165.45/player/update/supervisorLogin/1' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "role": "user"
+	}'
+	200 OK
+	{
+	    "id": 1,
+	    "login": "supervisorLogin",
+	    "screenName": "supervisorScreenName",
+	    "gender": "male",
+	    "age": 33,
+	    "role": "supervisor"
+	}
+	curl --location 'http://3.68.165.45/player/get' \
+	--header 'Content-Type: application/json' \
+	--data '{
+	    "playerId": 1
+	}'
+	200 OK
+	{
+	    "id": 1,
+	    "login": "supervisorLogin",
+	    "password": "123AbC098",
+	    "screenName": "supervisorScreenName",
+	    "gender": "male",
+	    "age": 33,
+	    "role": "supervisor"
+	}

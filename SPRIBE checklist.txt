@@ -1,0 +1,116 @@
+SPRIBE checklist
+
+1. Create Player (GET /player/create/{editor})
+
+Positive Test Cases:
+PTC1.1 - Create player 17 years old by role 'supervisor' with gender 'male' and role 'user' and password '019azAZ'
+PTC1.2 - Create player 59 years old by role 'supervisor' with gender 'Female' and role 'admin' and password '0123456789abcde'
+PTC1.3 - Create player 20 years old by role 'admin' with gender 'female' and role 'admin' and password '0123456789ABCDE'
+PTC1.4 - Create player 55 years old by role 'admin' with gender 'MALE' and role user and password 'abcde0123456789'
+
+Negative Test Cases:
+NTC1.5 - Empty editor
+NTC1.6 - Not existed editor
+NTC1.7 - editor with role 'user'
+NTC1.8 - Create player with age 16 years old
+NTC1.9 - Create player with age 60 years old
+NTC1.10 - Create player with age value in float format with dot
+NTC1.11 - Create player with age value in float format with comma
+NTC1.12 - Create player with age value as int number in String format
+NTC1.13 - Create player with age value as a letters in String format
+NTC1.14 - Create player without age parameter
+NTC1.15 - Create player with empty age value
+NTC1.16 - Create player without gender parameter
+NTC1.17 - Create player with empty gender value
+NTC1.18 - Create player without login parameter
+NTC1.19 - Create player with empty login value
+NTC1.20 - Create player without password parameter
+NTC1.21 - Create player with empty password value
+NTC1.22 - Create player without role parameter
+NTC1.23 - Create player with empty role value
+NTC1.24 - Create player without screenName parameter
+NTC1.25 - Create player with empty screenName value
+NTC1.26 - Create player with gender 'wrong'
+NTC1.27 - Create player with login that already exists
+NTC1.28 - Create player with space character as login
+NTC1.29 - Create player with 2 space characters as login
+NTC1.30 - Create player with password with only digits
+NTC1.31 - Create player with password with only letters
+NTC1.32 - Create player with password with not allowed characters 1 ()!@#$%.&*+;%:?
+NTC1.33 - Create player with password with not allowed characters 2 їß<>~!?;:"'№-_=
+NTC1.34 - Create player with password with 7 spaces as a value
+NTC1.35 - Create player with password 6 characters long
+NTC1.36 - Create player with password 16 characters long
+NTC1.37 - Create player with role supervisor
+NTC1.38 - Create player with role wrong
+NTC1.39 - Create player with screenName that already exists
+NTC1.40 - Create player with login as existed supervisor but with role 'user'
+
+2. Delete Player (DELETE /player/delete/{editor})
+
+Positive Test Cases:
+PTC2.1 - Delete player with 'user' role by 'supervisor'
+PTC2.2 - Delete player with 'admin' role by 'supervisor'
+PTC2.3 - Delete player with 'user' role by 'admin'
+PTC2.4 - Delete player himself as 'admin'
+
+Negative Test Cases:
+NTC2.5 - Delete player with empty editor
+NTC2.6 - Delete player with role 'admin' by different 'admin'
+NTC2.7 - Delete player with role 'user' by different 'user'
+NTC2.8 - Delete player himself as 'user'
+NTC2.9 - Delete player himself as 'supervisor'
+NTC2.10 - Delete player with not existed editor
+NTC2.11 - Delete player with empty playerId value
+NTC2.12 - Delete player with not existed playerId value
+NTC2.13 - Delete player with playerId value as float
+NTC2.14 - Delete player with playerId value as String with int number
+NTC2.15 - Delete player with playerId value as String with float number
+NTC2.16 - Delete player with empty body
+
+3. Get Player by ID (POST /player/get)
+
+Positive Test Cases:
+PTC3.1 - Get player by valid playerId
+
+Negative Test Cases:
+NTC3.2 - Get player with playerId as float
+NTC3.3 - Get player with playerId as String with int number
+NTC3.4 - Get player with playerId as String with float
+NTC3.5 - Get player by not existed playerId
+NTC3.6 - Get player without providing playerId
+NTC3.7 - Get player with negative int number as playerId
+
+4. Get All Players (GET /player/get/all)
+
+Positive Test Cases:
+PTC4.1 - Check that id, login and screenName are unique in the list
+
+5. Update Player (PATCH /player/update/{editor}/{id})
+
+Positive Test Cases:
+PTC5.1 - Update player with role 'admin' all fields max length or value by supervisor
+PTC5.2 - Update only players age to 17 with role 'user' by 'supervisor'
+PTC5.3 - Update only players gender to 'male' or 'female' with role 'admin' by himself
+PTC5.4 - Update only players login to a unique value with role 'user' by admin
+PTC5.5 - Update only players password with 7 characters long with role 'user' by himself
+PTC5.6 - Update only players screenName to a unique value with role 'supervisor' by 'supervisor'
+
+Negative Test Cases:
+NTC5.7 - Update player with empty age
+NTC5.8 - Update player with age 16
+NTC5.9 - Update player with age 60
+NTC5.10 - Update player with empty gender
+NTC5.11 - Update player with wrong gender
+NTC5.12 - Update player with empty login
+NTC5.13 - Update player with non-unique login
+NTC5.14 - Update player with empty screenName
+NTC5.15 - Update player with non-unique screenName
+NTC5.16 - Update player without required fields
+NTC5.17 - Update player with role 'user' by another 'user'
+NTC5.18 - Update player with role 'admin' by another 'admin'
+NTC5.19 - Update player with role 'supervisor' by 'admin'
+NTC5.20 - Update player with role 'supervisor' by 'user'
+NTC5.21 - Update player with minimum password length (6 characters)
+NTC5.22 - Update player with password length (16 characters)
+NTC5.23 - Change player role from 'supervisor' to 'admin' by 'supervisor' himself

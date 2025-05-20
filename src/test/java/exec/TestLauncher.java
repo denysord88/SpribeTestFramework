@@ -25,11 +25,17 @@ public class TestLauncher {
     private static void runTests(List<XmlPackage> packages, String suiteName) {
         XmlSuite suite = new XmlSuite();
         suite.setName(suiteName);
-        suite.setParallel(XmlSuite.ParallelMode.METHODS);
-        suite.setThreadCount(TESTING_THREADS);
+        suite.setParallel(XmlSuite.ParallelMode.NONE);
+
+        XmlTest preparationTest = new XmlTest(suite);
+        preparationTest.setName("TestDataPreparation");
+        preparationTest.setParallel(XmlSuite.ParallelMode.NONE);
+        preparationTest.setXmlPackages(List.of(new XmlPackage("preparation")));
 
         XmlTest test = new XmlTest(suite);
-        test.setName("Tests");
+        test.setName("MainTests");
+        test.setParallel(XmlSuite.ParallelMode.METHODS);
+        test.setThreadCount(TESTING_THREADS);
         test.setXmlPackages(packages);
         if (INCLUDED_GROUPS.length > 0 && !INCLUDED_GROUPS[0].isEmpty())
             test.setIncludedGroups(Arrays.asList(INCLUDED_GROUPS));
@@ -48,8 +54,7 @@ public class TestLauncher {
         TestNG tng = new TestNG();
         tng.setXmlSuites(suites);
         tng.setUseDefaultListeners(false);
-        TestListenerAdapter tla = new TestListenerAdapter();
-        tng.addListener(tla);
+        tng.addListener(new TestListenerAdapter());
         tng.addListener(new TestEventsListener());
         tng.run();
     }
