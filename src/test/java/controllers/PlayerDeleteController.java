@@ -19,7 +19,7 @@ public class PlayerDeleteController extends BaseController {
     @Step("Deleting player with id={playerId} by editor_login={editor}")
     public ResponseEntityModel deletePlayerDelete(String editor, long playerId) {
         ValidatableResponse response = deletePlayerDeleteResponse(editor, playerId);
-        response.assertThat().statusCode(200);
+        response.assertThat().statusCode(204);
         return response.extract().as(ResponseEntityModel.class);
     }
 }
