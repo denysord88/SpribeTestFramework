@@ -1,0 +1,9 @@
+.idea/
+*.iml
+target/
+.DS_Store
+dependency-reduced-pom.xml
+.env
+allure-results/
+.allure/
+TestNG_debug.xml
