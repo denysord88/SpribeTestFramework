@@ -63,3 +63,4 @@ Report files will be saved in: `target/site/allure-maven-plugin`
 - `SPRIBE checklist actual results.txt` – requests & actual response results after exploratory testing
 - `SpribeTestFramework API.postman_collection.json` – Postman collection
 - `openapi.json` – OpenAPI specification
+- `final-allure-report.zip` - archived Allure report after local test execution of all tests
