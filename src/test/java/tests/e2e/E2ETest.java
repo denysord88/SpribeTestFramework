@@ -1,20 +1,23 @@
 package tests.e2e;
 
-import controllers.PlayerCreateController;
-import controllers.PlayerDeleteController;
-import controllers.PlayerGetController;
+import controllers.*;
 import io.restassured.response.ValidatableResponse;
+import jakarta.validation.constraints.NotNull;
 import models.PlayerCreateResponseDtoModel;
+import models.PlayerGetAllResponseDtoModel;
 import models.PlayerGetByPlayerIdResponseDtoModel;
+import models.PlayerUpdateResponseDtoModel;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 import tests.BaseTest;
 
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 import static testng.TestEventsListener.getCurrentTime;
 
 public class E2ETest extends BaseTest {
     private long createdPlayerId = 0;
+
     @Test(enabled = true, groups = {"e2e"}, description = "Check all endpoints together")
     public void completeFlowTest() {
         String uniquePart = getRandomString(
@@ -58,10 +61,44 @@ public class E2ETest extends BaseTest {
                 errors + "\n");
 
         // Read all
+        PlayerGetAllResponseDtoModel allPlayersResponse = new PlayerGetAllController().getPlayerGetAll();
 
+        PlayerGetAllResponseDtoModel.PlayerItemModel createdPlayerItem = null;
+        for (int i = 0; i < allPlayersResponse.getPlayers().size(); i++) {
+            if (allPlayersResponse.getPlayers().get(i).getId() == createdPlayerId) {
+                createdPlayerItem = allPlayersResponse.getPlayers().get(i);
+                break;
+            }
+        }
+        assertTrue(createdPlayerItem != null, "Created player not found in the list.");
+        assertEquals(createdPlayerItem.getAge(), Integer.valueOf(18), "Wrong age");
+        assertEquals(createdPlayerItem.getGender(), "MALE", "Wrong Gender");
+        //assertEquals(createdPlayerItem.getRole(), "admin", "Wrong Role");
+        assertEquals(createdPlayerItem.getScreenName(), "ScreenName_" + uniquePart, "Wrong ScreenName");
 
         // Update
+        PlayerUpdateResponseDtoModel updatedPlayer = new PlayerUpdateController().patchPlayerUpdate(
+                SUPERVISOR_LOGIN,
+                createdPlayerId,
+                19,
+                "FEMALE",
+                "Login_updated_" + uniquePart,
+                "testPassword2",
+                "admin",
+                "ScreenName_updated" + uniquePart
+        );
+        assertEquals(updatedPlayer.getAge(), Integer.valueOf(19), "Wrong age");
+        assertEquals(updatedPlayer.getGender(), "FEMALE", "Wrong Gender");
+        assertEquals(updatedPlayer.getLogin(), "Login_updated_" + uniquePart, "Wrong Login");
+        assertEquals(new PlayerGetController().postPlayerGet(createdPlayerId).getPassword(),
+                "testPassword2", "Wrong Password");
+        assertEquals(updatedPlayer.getRole(), "admin", "Wrong Role");
+        assertEquals(updatedPlayer.getScreenName(), "ScreenName_updated" + uniquePart, "Wrong ScreenName");
+
         // Delete
+        ValidatableResponse response = new PlayerDeleteController().deletePlayerDeleteResponse(SUPERVISOR_LOGIN, createdPlayerId);
+        assertEquals(response.extract().statusCode(), 204, "Failed to delete created player with ID: " +
+                createdPlayerId + ". Status: " + response.extract().statusLine() + " - " + response.extract().body().asString());
     }
 
     @AfterMethod(alwaysRun = true)
