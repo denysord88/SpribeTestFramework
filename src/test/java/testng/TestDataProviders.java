@@ -8,13 +8,14 @@ public class TestDataProviders {
         return new Object[][]{
                 // String TCNumber, String testPlayerAlias, String age, String gender,
                 //                                String login, String password, String role, String screenName
+                {"PTC1.3", "adminCreator", "18", "female", "AdminCreatorLogin", "password123", "admin", "AdminCreatorName"},
+                {"PTC1.4", "adminCreator", "18", "male", "AdminCreatorLogin", "password123", "admin", "AdminCreatorName"},
                 {"PTC2.1", "userToDelete", "18", "male", "UserLogin", "password123", "user", "UserName"},
                 {"PTC2.2", "adminToDelete", "18", "female", "AdminLogin", "password123", "admin", "AdminName"},
                 {"PTC2.3", "userToDeleteByAdmin", "18", "male", "UserLogin", "password123", "user", "UserName"},
                 {"PTC2.3", "adminEditor", "18", "female", "AdminLogin", "password123", "admin", "AdminName"},
                 {"PTC2.4", "adminToDeleteHimself", "18", "male", "AdminLogin", "password123", "admin", "AdminName"},
-                {"PTC1.3", "adminCreator", "18", "female", "AdminCreatorLogin", "password123", "admin", "AdminCreatorName"},
-                {"PTC1.4", "adminCreator", "18", "male", "AdminCreatorLogin", "password123", "admin", "AdminCreatorName"}
+                {"PTC3.1", "userById", "17", "male", "userToGetById", "019azAZ", "user", "userScreenNameToGetById"}
         };
     }
 
@@ -46,6 +47,17 @@ public class TestDataProviders {
                 {"PTC2.2", "adminToDelete", "supervisor", "Delete player with 'admin' role by 'supervisor'"},
                 {"PTC2.3", "userToDeleteByAdmin", "adminEditor", "Delete player with 'user' role by 'admin'"},
                 {"PTC2.4", "adminToDeleteHimself", "adminToDeleteHimself", "Delete player himself as 'admin'"}
+        };
+    }
+
+    @DataProvider(name = "getPlayerPositive")
+    public Object[][] getPlayerPositive() {
+        return new Object[][]{
+                // String TCNumber, String playerAlias, String age, String gender, String login,
+                // String password, String role, String screenName, String description
+                {"PTC3.1", "userById", "17", "male", "userToGetById", "019azAZ", "user", "userScreenNameToGetById",
+                        "Get details by id of player 17 years old with gender 'male' and role 'user' and " +
+                                "password '019azAZ'"}
         };
     }
 }
