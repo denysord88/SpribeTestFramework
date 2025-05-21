@@ -34,7 +34,27 @@ public class TestDataProviders {
                 {"PTC5.4", "adminEditor", "50", "female", "adminEditorLogin", "0123456789abcDE", "admin",
                         "adminScreenNameEditor"},
                 {"PTC5.5", "userToUpdate", "17", "male", "userToUpdateLogin", "0123456789abcDE", "user",
-                        "userScreenNameToUpdate"}
+                        "userScreenNameToUpdate"},
+                {"NTC5.8", "tooYoung", "17", "male", "adminToUpdateLogin", "abcdef1", "admin",
+                        "adminToUpdateScreenName"},
+                {"NTC5.9", "tooOld", "17", "male", "adminToUpdateLogin", "abcdef1", "admin",
+                        "adminToUpdateScreenName"},
+                {"NTC5.11", "wrongGender", "54", "male", "adminToUpdateLogin", "abcdef1", "admin",
+                        "adminToUpdateScreenName"},
+                {"NTC5.17", "userToUpdate", "43", "male", "userToUpdateLogin", "abcdef1", "user",
+                        "userToUpdateScreenName"},
+                {"NTC5.17", "userEditor", "33", "male", "userLogin", "abcdef1", "user",
+                        "userScreenName"},
+                {"NTC5.18", "adminToUpdate", "22", "male", "adminToUpdateLogin", "abcdef1", "admin",
+                        "adminToUpdateScreenName"},
+                {"NTC5.18", "adminEditor", "44", "male", "adminLogin", "abcdef1", "admin",
+                        "adminScreenName"},
+                {"NTC5.19", "adminEditor", "55", "male", "adminLogin", "abcdef1", "admin", "adminScreenName"},
+                {"NTC5.20", "userEditor", "44", "male", "userLogin", "abcdef1", "user", "userScreenName"},
+                {"NTC5.21", "smallPassword", "22", "male", "adminToUpdateLogin", "abcdef1", "admin",
+                        "adminToUpdateScreenName"},
+                {"NTC5.22", "longPassword", "33", "male", "adminToUpdateLogin", "abcdef1", "admin",
+                        "adminToUpdateScreenName"}
         };
     }
 
@@ -140,6 +160,41 @@ public class TestDataProviders {
                         "0123456789abcDE", "user", "userScreenNameUpdated", "Update 'user' by 'admin'"},
                 {"PTC5.5", "userToUpdate", "userToUpdate", "59", "male", "userUpdatedLogin",
                         "0123456789abcDE", "user", "userScreenNameUpdated", "Update 'user' himself"}
+        };
+    }
+
+    @DataProvider(name = "updatePlayersNegative")
+    public Object[][] updatePlayersNegative() {
+        return new Object[][]{
+                // String TCNumber, String playerAlias, String editor, String age, String gender, String login,
+                // String password, String role, String screenName, int expectedStatusCode, String description
+                {"NTC5.8", "tooYoung", "supervisor", "16", "male", "adminUpdatedLogin",
+                        "0123456789abcDE", "admin", "adminScreenNameUpdated", 400,
+                        "Update player with age 16"},
+                {"NTC5.9", "tooOld", "supervisor", "60", "male", "adminUpdatedLogin",
+                        "0123456789abcDE", "admin", "adminScreenNameUpdated", 400,
+                        "Update player with age 60"},
+                {"NTC5.11", "wrongGender", "supervisor", "59", "wrong", "adminUpdatedLogin",
+                        "0123456789abcDE", "admin", "adminScreenNameUpdated", 400,
+                        "Update player with wrong gender"},
+                {"NTC5.17", "userToUpdate", "userEditor", "59", "male", "userUpdatedLogin",
+                        "0123456789abcDE", "user", "userScreenNameUpdated", 403,
+                        "Update player with role 'user' by another 'user'"},
+                {"NTC5.18", "adminToUpdate", "adminEditor", "59", "male", "adminUpdatedLogin",
+                        "0123456789abcDE", "admin", "adminScreenNameUpdated", 403,
+                        "Update player with role 'admin' by another 'admin'"},
+                {"NTC5.19", "supervisor", "adminEditor", "59", "male", "supervisorUpdatedLogin",
+                        "0123456789abcDE", "supervisor", "supervisorUpdatedScreenName", 403,
+                        "Update player with role 'supervisor' by 'admin'"},
+                {"NTC5.20", "supervisor", "userEditor", "59", "male", "supervisorUpdatedLogin",
+                        "0123456789abcDE", "supervisor", "supervisorUpdatedScreenName", 403,
+                        "Update player with role 'supervisor' by 'user'"},
+                {"NTC5.21", "smallPassword", "supervisor", "59", "male", "adminUpdatedLogin",
+                        "12345s", "admin", "adminScreenNameUpdated", 400,
+                        "Update player with minimum password length (6 characters)"},
+                {"NTC5.22", "longPassword", "supervisor", "59", "male", "adminUpdatedLogin",
+                        "0123456789abcDEF", "admin", "adminScreenNameUpdated", 400,
+                        "Update player with password length (16 characters)"}
         };
     }
 }
