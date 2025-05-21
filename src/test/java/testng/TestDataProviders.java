@@ -15,6 +15,12 @@ public class TestDataProviders {
                 {"PTC2.3", "userToDeleteByAdmin", "18", "male", "UserLogin", "password123", "user", "UserName"},
                 {"PTC2.3", "adminEditor", "18", "female", "AdminLogin", "password123", "admin", "AdminName"},
                 {"PTC2.4", "adminToDeleteHimself", "18", "male", "AdminLogin", "password123", "admin", "AdminName"},
+                {"NTC2.6", "adminToDelete", "18", "male", "AdminLogin", "password123", "admin", "AdminName"},
+                {"NTC2.6", "adminEditor", "18", "female", "AdminEditorLogin", "password123", "admin", "AdminEditorName"},
+                {"NTC2.7", "userToDelete", "18", "female", "UserLogin", "password123", "user", "UserName"},
+                {"NTC2.7", "userEditor", "18", "male", "UserEditorLogin", "password123", "user", "UserEditorName"},
+                {"NTC2.8", "userToDelete", "18", "male", "UserLogin", "password123", "user", "UserName"},
+                {"NTC2.10", "adminToDelete", "18", "male", "AdminLogin", "password123", "admin", "AdminName"},
                 {"PTC3.1", "userById", "17", "male", "userToGetById", "019azAZ", "user", "userScreenNameToGetById"},
                 {"PTC5.1", "adminToUpdate", "17", "male", "adminToUpdateLogin", "abcdef1", "admin",
                         "adminScreenNameToUpdate"},
@@ -59,6 +65,17 @@ public class TestDataProviders {
                 {"PTC2.2", "adminToDelete", "supervisor", "Delete player with 'admin' role by 'supervisor'"},
                 {"PTC2.3", "userToDeleteByAdmin", "adminEditor", "Delete player with 'user' role by 'admin'"},
                 {"PTC2.4", "adminToDeleteHimself", "adminToDeleteHimself", "Delete player himself as 'admin'"}
+        };
+    }
+
+    @DataProvider(name = "deletePlayersNegative")
+    public Object[][] deletePlayersNegative() {
+        return new Object[][]{
+                // String TCNumber, String playerAlias, String editor, int expectedStatusCode, String description
+                {"NTC2.6", "adminToDelete", "adminEditor", 403, "Delete player with role 'admin' by different 'admin'"},
+                {"NTC2.7", "userToDelete", "userEditor", 403, "Delete player with role 'user' by different 'user'"},
+                {"NTC2.8", "userToDelete", "userToDelete", 403, "Delete player himself as 'user'"},
+                {"NTC2.10", "adminToDelete", "random", 403, "Delete player with not existed editor"}
         };
     }
 
