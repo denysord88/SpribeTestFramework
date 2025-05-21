@@ -89,9 +89,9 @@ PTC4.1 - Check that id, login and screenName are unique in the list
 5. Update Player (PATCH /player/update/{editor}/{id})
 
 Positive Test Cases:
-PTC5.1 - Update player with role 'admin' all fields max length or value by supervisor
-PTC5.2 - Update only players age to 17 with role 'user' by 'supervisor'
-PTC5.3 - Update only players gender to 'male' or 'female' with role 'admin' by himself
+PTC5.1 - Update player with role 'admin' all fields max length or value by 'supervisor'
+PTC5.2 - Update player with role 'user' all fields min length or value by 'supervisor'
+PTC5.3 - Update 'admin' himself
 PTC5.4 - Update only players login to a unique value with role 'user' by admin
 PTC5.5 - Update only players password with 7 characters long with role 'user' by himself
 PTC5.6 - Update only players screenName to a unique value with role 'supervisor' by 'supervisor'
