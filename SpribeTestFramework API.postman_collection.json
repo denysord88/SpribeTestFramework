@@ -1,0 +1,199 @@
+{
+	"info": {
+		"_postman_id": "4fbe618e-bb91-42fb-83e0-520e5bf0304f",
+		"name": "SpribeTestFramework API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5900714"
+	},
+	"item": [
+		{
+			"name": "createPlayer",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://3.68.165.45/player/create/supervisor?age=1&gender=1&login=1&password=1&role=1&screenName=1",
+					"protocol": "http",
+					"host": [
+						"3",
+						"68",
+						"165",
+						"45"
+					],
+					"path": [
+						"player",
+						"create",
+						"supervisor"
+					],
+					"query": [
+						{
+							"key": "age",
+							"value": "1",
+							"description": "age"
+						},
+						{
+							"key": "gender",
+							"value": "1",
+							"description": "gender"
+						},
+						{
+							"key": "login",
+							"value": "1",
+							"description": "login"
+						},
+						{
+							"key": "password",
+							"value": "1",
+							"description": "password"
+						},
+						{
+							"key": "role",
+							"value": "1",
+							"description": "role"
+						},
+						{
+							"key": "screenName",
+							"value": "1",
+							"description": "screenName"
+						}
+					]
+				},
+				"description": "createPlayer"
+			},
+			"response": []
+		},
+		{
+			"name": "deletePlayer",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://3.68.165.45/player/delete/{editor}",
+					"protocol": "http",
+					"host": [
+						"3",
+						"68",
+						"165",
+						"45"
+					],
+					"path": [
+						"player",
+						"delete",
+						"{editor}"
+					],
+					"variable": [
+						{
+							"key": "editor",
+							"value": "{editor}",
+							"description": "editor"
+						}
+					]
+				},
+				"description": "deletePlayer"
+			},
+			"response": []
+		},
+		{
+			"name": "getPlayerByPlayerId",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://3.68.165.45/player/get",
+					"protocol": "http",
+					"host": [
+						"3",
+						"68",
+						"165",
+						"45"
+					],
+					"path": [
+						"player",
+						"get"
+					]
+				},
+				"description": "getPlayerByPlayerId"
+			},
+			"response": []
+		},
+		{
+			"name": "getAllPlayers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://3.68.165.45/player/get/all",
+					"protocol": "http",
+					"host": [
+						"3",
+						"68",
+						"165",
+						"45"
+					],
+					"path": [
+						"player",
+						"get",
+						"all"
+					]
+				},
+				"description": "getAllPlayers"
+			},
+			"response": []
+		},
+		{
+			"name": "updatePlayer",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://3.68.165.45/player/update/{editor}/{id}",
+					"protocol": "http",
+					"host": [
+						"3",
+						"68",
+						"165",
+						"45"
+					],
+					"path": [
+						"player",
+						"update",
+						"{editor}",
+						"{id}"
+					],
+					"variable": [
+						{
+							"key": "editor",
+							"value": "{editor}",
+							"description": "editor"
+						},
+						{
+							"key": "id",
+							"value": "{id}",
+							"description": "id"
+						}
+					]
+				},
+				"description": "updatePlayer"
+			},
+			"response": []
+		}
+	]
+}
