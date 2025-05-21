@@ -14,12 +14,11 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import tests.BaseTest;
 
-import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 import static testng.TestEventsListener.getCurrentTime;
 
 public class PlayerUpdateTest extends BaseTest {
-    private static PlayerGetByPlayerIdResponseDtoModel createdPlayer = null;
+    private PlayerGetByPlayerIdResponseDtoModel createdPlayer = null;
 
     @BeforeMethod(alwaysRun = true)
     public void createPlayer() {

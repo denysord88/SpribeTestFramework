@@ -30,6 +30,7 @@ public class TestLauncher {
         XmlTest preparationTest = new XmlTest(suite);
         preparationTest.setName("TestDataPreparation");
         preparationTest.setParallel(XmlSuite.ParallelMode.NONE);
+        preparationTest.setThreadCount(1);
         preparationTest.setXmlPackages(List.of(new XmlPackage("preparation")));
 
         XmlTest test = new XmlTest(suite);

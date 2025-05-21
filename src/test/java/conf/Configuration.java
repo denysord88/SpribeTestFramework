@@ -13,6 +13,7 @@ public class Configuration {
     public static final long MAX_RESPONSE_TIME_SECONDS = getLong("MAX_RESPONSE_TIME_SECONDS");
     public static final String[] EXCLUDED_GROUPS = getString("EXCLUDED_GROUPS").split(",");
     public static final String[] INCLUDED_GROUPS = getString("INCLUDED_GROUPS").split(",");
+    public static final String UNIQUE_FRAMEWORK_TEST_DATA_ID = getString("UNIQUE_FRAMEWORK_TEST_DATA_ID");
 
     private static String getString(String key) {
         String property = System.getProperty(key);

@@ -13,7 +13,7 @@ import static org.testng.Assert.assertTrue;
 import static testng.TestEventsListener.getCurrentTime;
 
 public class PlayerCreateTest extends BaseTest {
-    private static long createdPlayerId = 0;
+    private long createdPlayerId = 0;
 
     @Description("Creating new player")
     @Test(enabled = true, groups = {"smoke"}, description = "GET /player/create/{editor}?age={age}&gender={gender}" +

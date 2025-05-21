@@ -10,9 +10,9 @@ import java.util.HashMap;
 public class TestDataPreparationTest extends BaseTest {
     @Test(enabled = true, dataProvider = "testDataCreation", dataProviderClass = TestDataProviders.class,
             description = "GET /player/create/{editor}?age={age}&gender={gender}" +
-            "&login={login}&password={password}&role={role}&screenName={screenName}")
+                    "&login={login}&password={password}&role={role}&screenName={screenName}")
     public void prepareTestData(String TCNumber, String testPlayerAlias, String age, String gender,
-                                String login, String password, String role, String screenName) {
+                                String login, String password, String role, String screenName) throws InterruptedException {
         String uniquePart = getRandomString(
                 this.getClass().getSimpleName(),
                 Thread.currentThread().getStackTrace()[1].getMethodName(),
@@ -27,5 +27,6 @@ public class TestDataPreparationTest extends BaseTest {
                 role,
                 screenName + "_" + uniquePart
         ));
+        System.out.println(TEST_DATA.get(TCNumber).get(testPlayerAlias).toString());
     }
 }

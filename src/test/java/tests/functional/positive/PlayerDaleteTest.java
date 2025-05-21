@@ -1,7 +1,6 @@
 package tests.functional.positive;
 
 import controllers.PlayerDeleteController;
-import io.qameta.allure.Description;
 import io.restassured.response.ValidatableResponse;
 import models.PlayerCreateResponseDtoModel;
 import org.testng.annotations.Test;
@@ -17,7 +16,7 @@ public class PlayerDaleteTest extends BaseTest {
         PlayerCreateResponseDtoModel testPlayer = TEST_DATA.get(TCNumber).get(playerAlias);
         String editorLogin = editor.equals("supervisor") ? SUPERVISOR_LOGIN :
                 TEST_DATA.get(TCNumber).get(editor).getLogin();
-        ValidatableResponse response = new PlayerDeleteController().deletePlayerDeleteResponse(editor, testPlayer.getId());
+        ValidatableResponse response = new PlayerDeleteController().deletePlayerDeleteResponse(editorLogin, testPlayer.getId());
         assertEquals(response.extract().statusLine(), "HTTP/1.1 204 ", "Failed to delete player " +
                 playerAlias + " with ID: " + testPlayer.getId() + " by editor '" + editor + "': HTTP " +
                 response.extract().statusLine() + " - " + response.extract().body().asString());

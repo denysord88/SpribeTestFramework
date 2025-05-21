@@ -9,7 +9,6 @@ import testng.TestDataProviders;
 import tests.BaseTest;
 
 public class PlayerCreateTest extends BaseTest {
-    @Description("")
     @Test(enabled = true, groups = {"functional", "positive"}, description = "GET /player/create/{editor}?age={age}" +
             "&gender={gender}&login={login}&password={password}&role={role}&screenName={screenName}",
             dataProvider = "createPlayersPositive", dataProviderClass = TestDataProviders.class)
