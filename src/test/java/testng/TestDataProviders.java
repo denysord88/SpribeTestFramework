@@ -15,7 +15,19 @@ public class TestDataProviders {
                 {"PTC2.3", "userToDeleteByAdmin", "18", "male", "UserLogin", "password123", "user", "UserName"},
                 {"PTC2.3", "adminEditor", "18", "female", "AdminLogin", "password123", "admin", "AdminName"},
                 {"PTC2.4", "adminToDeleteHimself", "18", "male", "AdminLogin", "password123", "admin", "AdminName"},
-                {"PTC3.1", "userById", "17", "male", "userToGetById", "019azAZ", "user", "userScreenNameToGetById"}
+                {"PTC3.1", "userById", "17", "male", "userToGetById", "019azAZ", "user", "userScreenNameToGetById"},
+                {"PTC5.1", "adminToUpdate", "17", "male", "adminToUpdateLogin", "abcdef1", "admin",
+                        "adminScreenNameToUpdate"},
+                {"PTC5.2", "userToUpdate", "59", "female", "userToUpdateLogin", "0123456789abcDE", "user",
+                        "userScreenNameToUpdate"},
+                {"PTC5.3", "adminToUpdate", "20", "female", "adminToUpdateLogin", "0123456789abcDE", "admin",
+                        "adminScreenNameToUpdate"},
+                {"PTC5.4", "userToUpdate", "33", "female", "userToUpdateLogin", "0123456789abcDE", "user",
+                        "userScreenNameToUpdate"},
+                {"PTC5.4", "adminEditor", "50", "female", "adminEditorLogin", "0123456789abcDE", "admin",
+                        "adminScreenNameEditor"},
+                {"PTC5.5", "userToUpdate", "17", "male", "userToUpdateLogin", "0123456789abcDE", "user",
+                        "userScreenNameToUpdate"}
         };
     }
 
@@ -58,6 +70,26 @@ public class TestDataProviders {
                 {"PTC3.1", "userById", "17", "male", "userToGetById", "019azAZ", "user", "userScreenNameToGetById",
                         "Get details by id of player 17 years old with gender 'male' and role 'user' and " +
                                 "password '019azAZ'"}
+        };
+    }
+
+    @DataProvider(name = "updatePlayersPositive")
+    public Object[][] updatePlayersPositive() {
+        return new Object[][]{
+                // String TCNumber, String playerAlias, String editor, String age, String gender, String login,
+                // String password, String role, String screenName, String description
+                {"PTC5.1", "adminToUpdate", "supervisor", "59", "male", "adminUpdatedLogin",
+                        "0123456789abcDE", "admin", "adminScreenNameUpdated",
+                        "Update player with role 'admin' all fields max length or value by supervisor"},
+                {"PTC5.2", "userToUpdate", "supervisor", "17", "female", "userUpdatedLogin",
+                        "012345cD", "user", "userScreenNameUpdated",
+                        "Update player with role 'user' all fields min length or value by supervisor"},
+                {"PTC5.3", "adminToUpdate", "adminToUpdate", "59", "female", "adminUpdatedLogin",
+                        "0123456789abcDE", "admin", "adminScreenNameUpdated", "Update 'admin' himself"},
+                {"PTC5.4", "userToUpdate", "adminEditor", "59", "female", "userUpdatedLogin",
+                        "0123456789abcDE", "user", "userScreenNameUpdated", "Update 'user' by 'admin'"},
+                {"PTC5.5", "userToUpdate", "userToUpdate", "59", "male", "userUpdatedLogin",
+                        "0123456789abcDE", "user", "userScreenNameUpdated", "Update 'user' himself"}
         };
     }
 }
