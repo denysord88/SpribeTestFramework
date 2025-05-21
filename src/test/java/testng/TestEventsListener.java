@@ -1,14 +1,20 @@
 package testng;
 
+import controllers.PlayerDeleteController;
+import controllers.PlayerGetAllController;
+import io.restassured.response.ValidatableResponse;
+import models.PlayerCreateResponseDtoModel;
+import models.PlayerGetAllResponseDtoModel;
 import org.testng.*;
 import org.testng.annotations.Test;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
+
+import static conf.Configuration.UNIQUE_FRAMEWORK_TEST_DATA_ID;
+import static tests.BaseTest.SUPERVISOR_LOGIN;
+import static tests.BaseTest.TEST_DATA;
 
 public class TestEventsListener implements ITestListener, IMethodInterceptor {
     private static int totalCountOfTests = 0;
@@ -63,6 +69,32 @@ public class TestEventsListener implements ITestListener, IMethodInterceptor {
         System.out.println("[INFO] " + getCurrentTime() + " All tests completed");
         runnedTests.clear();
         totalCountOfTests = 0;
+        if (iTestContext.getName().equals("MainTests")) {
+            for (var entry : TEST_DATA.entrySet()) {
+                String testCase = entry.getKey();
+                Map<String, PlayerCreateResponseDtoModel> players = entry.getValue();
+                for (var playerEntry : players.entrySet()) {
+                    String alias = playerEntry.getKey();
+                    PlayerCreateResponseDtoModel player = playerEntry.getValue();
+                    long playerId = player.getId();
+
+                    ValidatableResponse response = new PlayerDeleteController().deletePlayerDeleteResponse(SUPERVISOR_LOGIN, playerId);
+                    if (response.extract().statusCode() != 204) {
+                        System.err.println("[ERROR] " + getCurrentTime() + " Player not deleted [TC: " + testCase +
+                                ", alias: " + alias + ", ID: " + playerId + "]");
+                    } else {
+                        System.out.println("[DEBUG] " + getCurrentTime() + " Player deleted [TC: " + testCase +
+                                ", alias: " + alias + ", ID: " + playerId + "]");
+                    }
+                }
+            }
+            new PlayerGetAllController().getPlayerGetAll().getPlayers().forEach(playerItemModel -> {
+                if (playerItemModel.getScreenName().contains(UNIQUE_FRAMEWORK_TEST_DATA_ID)) {
+                    new PlayerDeleteController().deletePlayerDeleteResponse(SUPERVISOR_LOGIN, playerItemModel.getId());
+                }
+            });
+        }
+
         if (iTestContext.getFailedConfigurations().getAllResults().size() > 0) {
             StringBuffer sb = new StringBuffer();
             sb.append("=====================================\n");

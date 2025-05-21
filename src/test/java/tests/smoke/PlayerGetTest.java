@@ -16,7 +16,7 @@ import static org.testng.Assert.assertEquals;
 import static testng.TestEventsListener.getCurrentTime;
 
 public class PlayerGetTest extends BaseTest {
-    private static PlayerGetByPlayerIdResponseDtoModel createdPlayer = null;
+    private PlayerGetByPlayerIdResponseDtoModel createdPlayer = null;
 
     @BeforeMethod(alwaysRun = true)
     public void createPlayer() {

@@ -13,7 +13,7 @@ import static org.testng.Assert.assertEquals;
 import static testng.TestEventsListener.getCurrentTime;
 
 public class PlayerDeleteTest extends BaseTest {
-    private static long createdPlayerId = 0;
+    private long createdPlayerId = 0;
 
     @BeforeMethod(alwaysRun = true)
     public void createPlayer() {

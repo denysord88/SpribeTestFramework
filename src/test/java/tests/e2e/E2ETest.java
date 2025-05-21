@@ -14,7 +14,7 @@ import static org.testng.Assert.assertTrue;
 import static testng.TestEventsListener.getCurrentTime;
 
 public class E2ETest extends BaseTest {
-    private static long createdPlayerId = 0;
+    private long createdPlayerId = 0;
     @Test(enabled = true, groups = {"e2e"}, description = "Check all endpoints together")
     public void completeFlowTest() {
         String uniquePart = getRandomString(
