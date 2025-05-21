@@ -10,6 +10,7 @@ public class TestDataProviders {
                 //                                String login, String password, String role, String screenName
                 {"PTC1.3", "adminCreator", "18", "female", "AdminCreatorLogin", "password123", "admin", "AdminCreatorName"},
                 {"PTC1.4", "adminCreator", "18", "male", "AdminCreatorLogin", "password123", "admin", "AdminCreatorName"},
+                {"NTC1.7", "userEditor", "17", "male", "userEditorLogin", "019azAZ", "user", "userEditorScreenName"},
                 {"PTC2.1", "userToDelete", "18", "male", "UserLogin", "password123", "user", "UserName"},
                 {"PTC2.2", "adminToDelete", "18", "female", "AdminLogin", "password123", "admin", "AdminName"},
                 {"PTC2.3", "userToDeleteByAdmin", "18", "male", "UserLogin", "password123", "user", "UserName"},
@@ -54,6 +55,38 @@ public class TestDataProviders {
                 {"PTC1.4", "adminCreator", "55", "MALE", "userToCreateByAdmin", "abcde0123456789", "user",
                         "userScreenNameToCreateByAdmin", "Create player 55 years old by role 'admin' with gender 'MALE' and" +
                         " role user and password 'abcde0123456789'"}
+        };
+    }
+
+    @DataProvider(name = "createPlayersNegative")
+    public Object[][] createPlayersNegative() {
+        return new Object[][]{
+                // String TCNumber, String editor, String age, String gender, String login,
+                // String password, String role, String screenName, int expectedStatusCode, String description
+                {"NTC1.6", "random", "17", "male", "createdByNotExistedEditorLogin", "019azAZ", "user",
+                        "createdByNotExistedEditorScreenName", 403, "Not existed editor"},
+                {"NTC1.7", "userEditor", "17", "male", "createdByUserLogin", "019azAZ", "user", "createdByUserScreenName", 403,
+                        "editor with role 'user'"},
+                {"NTC1.8", "supervisor", "16", "male", "userToCreate", "019azAZ", "user", "userScreenNameToCreate", 400,
+                        "Create player with age 16 years old"},
+                {"NTC1.9", "supervisor", "60", "male", "userToCreate", "019azAZ", "user", "userScreenNameToCreate", 400,
+                        "Create player with age 60 years old"},
+                {"NTC1.26", "supervisor", "17", "wrong", "userToCreate", "019azAZ", "user", "userScreenNameToCreate", 400,
+                        "Create player with gender 'wrong'"},
+                {"NTC1.30", "supervisor", "17", "male", "userToCreate", "12345678", "user", "userScreenNameToCreate", 400,
+                        "Create player with password with only digits"},
+                {"NTC1.31", "supervisor", "17", "male", "userToCreate", "abcdEFGhi", "user", "userScreenNameToCreate", 400,
+                        "Create player with password with only letters"},
+                {"NTC1.32", "supervisor", "17", "male", "userToCreate", "()!@#$%.&*+;%:?", "user", "userScreenNameToCreate", 400,
+                        "Create player with password with not allowed characters ()!@#$%.&*+;%:?"},
+                {"NTC1.35", "supervisor", "17", "male", "userToCreate", "019azA", "user", "userScreenNameToCreate", 400,
+                        "Create player with password 6 characters long"},
+                {"NTC1.36", "supervisor", "17", "male", "userToCreate", "0123456789abcdef", "user", "userScreenNameToCreate", 400,
+                        "Create player with password 16 characters long"},
+                {"NTC1.37", "supervisor", "17", "male", "userToCreate", "019azAZ", "supervisor", "userScreenNameToCreate", 400,
+                        "Create player with role supervisor"},
+                {"NTC1.38", "supervisor", "17", "male", "userToCreate", "019azAZ", "wrong", "userScreenNameToCreate", 400,
+                        "Create player with role wrong"}
         };
     }
 
